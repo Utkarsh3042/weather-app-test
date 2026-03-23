@@ -22,11 +22,12 @@ app.get('/api/weather/:city', async (req, res) => {
     const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`);
     const data = response.data;
     
+    console.log('Weather response data:', data.weather);
     const weatherInfo = {
       city: data.name,
       temp: Math.round(data.main.temp - 273.15),
-      description: data.weather[0].description,
-      icon: data.weather[0].icon,
+      description: data.weather?.[0]?.description || 'No description',
+      icon: data.weather?.[0]?.icon || '01d', // Default to clear sky if missing
       humidity: data.main.humidity,
       windSpeed: data.wind.speed,
       country: data.sys.country
